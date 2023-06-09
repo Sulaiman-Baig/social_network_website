@@ -38,7 +38,7 @@ const Header = () => {
               to={`${item.path}`}
               className={`text-gray-200 ${
                 item.path === location.pathname &&
-                "bg-white text-black rounded py-1 px-3"
+                "bg-white text-gray-950 rounded py-1 px-3"
               }`}
             >
               {item.title}
