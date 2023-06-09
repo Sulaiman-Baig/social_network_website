@@ -24,7 +24,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="p-5 bg-primary">
+    <div className="p-5 bg-primary rounded-md">
       {!showMenu && (
         <div className="md:flex justify-end hidden bg-primary -mb-8">
           <CgMenuRightAlt
