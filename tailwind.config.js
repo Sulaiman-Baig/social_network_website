@@ -7,7 +7,7 @@ module.exports = {
         primary: "#203239",
       },
       screens: {
-        "3xl": { max: "1920px" },
+        "3xl": { max: "2020px" },
         "2xl": { max: "1535px" },
         // => @media (max-width: 1535px) { ... }
 
