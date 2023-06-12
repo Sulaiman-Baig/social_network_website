@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fireDB, app } from "../firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Register() {
   const { loading } = useSelector((store) => store);
-  const navigate =  useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log("loading", loading);
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ function Register() {
     const auth = getAuth(app);
     dispatch({ type: "showLoading" });
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {   
+      .then((userCredential) => {
         const user = userCredential.user;
         const userData = {
           id: user.uid,
@@ -35,15 +35,20 @@ function Register() {
           console.log("data after storing in firestore", d);
           toast.success("Registration Successfull");
           dispatch({ type: "hideLoading" });
-          navigate('/login')
+          navigate("/login");
         });
       })
       .catch((error) => {
         toast.error("Something went wrong");
-        dispatch({type: 'hideLoading'})
+        dispatch({ type: "hideLoading" });
         console.log(error);
       });
   };
+  useEffect(() => {
+    if (localStorage.getItem("sulaiman")) {
+      navigate("/");
+    }
+  });
 
   return (
     <div className="h-screen justify-between  flex flex-col overflow-x-hidden bg-primary">
@@ -59,28 +64,28 @@ function Register() {
       {/* form */}
       <div className="flex justify-center">
         <div className="w-96 flex flex-col space-y-5 card p-7">
-          <h1 className="text-4xl text-white font-semibold">Get---In</h1>
-          <hr className="w-full h-px mx-auto my-4 bg-white border-0 rounded md:my-10 dark:bg-gray-700" />
+          <h1 className="text-4xl text-gray-400 font-semibold">Get---In</h1>
+          <hr className="w-full h-px mx-auto my-4 bg-gray-600 border-0 rounded md:my-10 dark:bg-gray-700" />
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email"
             type="text"
-            className="text-gray-400 focus:outline outline-1 border border-gray-300 h-10 rounded-md focus:ring-red-700 pl-5 bg-transparent"
+            className="text-gray-400 focus:outline outline-1 border border-gray-600 h-10 rounded-md focus:ring-red-700 pl-5 bg-transparent"
           />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
             type="password"
-            className="text-gray-400 focus:outline outline-1 border border-gray-300 h-10 rounded-md focus:ring-red-700 pl-5 bg-transparent"
+            className="text-gray-400 focus:outline outline-1 border border-gray-600 h-10 rounded-md focus:ring-red-700 pl-5 bg-transparent"
           />
           <input
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="confirm password"
             type="password"
-            className="text-gray-400 focus:outline outline-1 border border-gray-300 h-10 rounded-md focus:ring-red-700 pl-5 bg-transparent"
+            className="text-gray-400 focus:outline outline-1 border border-gray-600 h-10 rounded-md focus:ring-red-700 pl-5 bg-transparent"
           />
           <div className="flex justify-end">
             <button
@@ -90,10 +95,10 @@ function Register() {
               Register
             </button>
           </div>
-          <hr className="w-full h-px mx-auto my-4 bg-white border-0 rounded md:my-10 dark:bg-gray-700" />
+          <hr className="w-full h-px mx-auto my-4 bg-gray-600 border-0 rounded md:my-10 dark:bg-gray-700" />
           <Link
             to="/login"
-            className="text-[14px] flex justify-center text-white"
+            className="text-[14px] flex justify-center text-gray-400"
           >
             ALREADY REGISTERED ? CLICK HERE TO LOGIN{" "}
           </Link>

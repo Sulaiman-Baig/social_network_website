@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fireDB, app } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 function Login() {
   const { loading } = useSelector((store) => store);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   console.log("loading", loading);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,15 +30,21 @@ function Login() {
           );
           toast.success("Login Successfull");
           dispatch({ type: "hideLoading" });
-          navigate('/')
+          navigate("/");
         });
       })
       .catch((error) => {
         toast.error("Login Failed");
-        dispatch({type: 'hideLoading'})
+        dispatch({ type: "hideLoading" });
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("sulaiman")) {
+      navigate("/");
+    }
+  });
 
   return (
     <div className="h-screen justify-between  flex flex-col overflow-x-hidden">
