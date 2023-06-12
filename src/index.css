@@ -3,6 +3,10 @@
     font-family: 'Poppins', sans-serif;
     font-family: 'Rubik', sans-serif;
 }
+html, body {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+}
 .card { 
 box-shadow: 0 0 3px gray
 }
