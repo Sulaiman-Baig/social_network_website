@@ -1,11 +1,28 @@
 import React, { useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
-
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 const AddPost = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const dispatch = useDispatch();
   const onImageChange = (e) => {
     setImage(e.target.files[0]);
+  };
+  const addPost = () => {
+    dispatch({ type: "showLoading" });
+    const storage = getStorage();
+    const storageRef = ref(storage, `posts/${image.name}`);
+    uploadBytes(storageRef, image)
+      .then((snapshot) => {
+        console.log("Uploaded a blob or file!");
+        dispatch({ type: "hideLoading" });
+        toast.success("Image Uploaded");
+      })
+      .catch(() => {
+        toast.error("Error while uploading");
+      });
   };
   return (
     <DefaultLayout>
@@ -14,6 +31,8 @@ const AddPost = () => {
         <textarea
           className="w-1/2 md:w-full border-2 border-dashed border-gray-500 my-5 mx-0 p-5"
           rows="3"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         ></textarea>
         <input type="file" onChange={(e) => onImageChange(e)}></input>
         {image && (
@@ -24,6 +43,14 @@ const AddPost = () => {
           ></img>
         )}
       </div>
+      {description && image && (
+        <button
+          onClick={addPost}
+          className="bg-primary h-10 rounded-sm text-white px-10"
+        >
+          UPLOAD
+        </button>
+      )}
     </DefaultLayout>
   );
 };
