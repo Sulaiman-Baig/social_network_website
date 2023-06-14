@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 const AddPost = () => {
@@ -16,9 +16,12 @@ const AddPost = () => {
     const storageRef = ref(storage, `posts/${image.name}`);
     uploadBytes(storageRef, image)
       .then((snapshot) => {
-        console.log("Uploaded a blob or file!");
-        dispatch({ type: "hideLoading" });
-        toast.success("Image Uploaded");
+        getDownloadURL(ref(storage, `posts/${image.name}`)).then((url) => {
+          console.log("URL", url);
+          // console.log("Uploaded a blob or file!");
+          dispatch({ type: "hideLoading" });
+          toast.success("Image Uploaded");
+        });
       })
       .catch(() => {
         toast.error("Error while uploading");
