@@ -46,7 +46,7 @@ const AddPost = () => {
       {description && image && (
         <button
           onClick={addPost}
-          className="bg-primary h-10 rounded-sm text-white px-10"
+          className="bg-primary h-10 rounded-sm text-white px-10 mt-10"
         >
           UPLOAD
         </button>
