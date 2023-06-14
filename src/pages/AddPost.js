@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { fireDB } from "../firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
+import Loader from "../components/Loader";
+
 const AddPost = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const { loading } = useSelector((store) => store);
   const dispatch = useDispatch();
   const onImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -17,10 +22,21 @@ const AddPost = () => {
     uploadBytes(storageRef, image)
       .then((snapshot) => {
         getDownloadURL(ref(storage, `posts/${image.name}`)).then((url) => {
-          console.log("URL", url);
-          // console.log("Uploaded a blob or file!");
-          dispatch({ type: "hideLoading" });
-          toast.success("Image Uploaded");
+          addDoc(collection(fireDB, "posts"), {
+            description,
+            imageURL: url,
+            likes: [],
+            comments: [],
+            user: JSON.parse(localStorage.getItem("sulaiman")),
+          })
+            .then(() => {
+              toast.success("Post created successfull.");
+              dispatch({ type: "hideLoading" });
+            })
+            .catch(() => {
+              dispatch({ type: "hideLoading" });
+              toast.error("Something went wrong.");
+            });
         });
       })
       .catch(() => {
@@ -29,6 +45,7 @@ const AddPost = () => {
   };
   return (
     <DefaultLayout>
+      {loading && <Loader />}
       <h1 className="text-3xl text-gray-600">Add New Post</h1>
       <div className="flex flex-col">
         <textarea

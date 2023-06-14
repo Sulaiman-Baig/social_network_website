@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
   const { loading } = useSelector((store) => store);
+  console.log("loading", loading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log("loading", loading);
