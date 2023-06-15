@@ -6,8 +6,10 @@ import { toast } from "react-toastify";
 import { fireDB } from "../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import Loader from "../components/Loader";
+import { useNavigate } from "react-router-dom";
 
 const AddPost = () => {
+  const navigate = useNavigate();
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const { loading } = useSelector((store) => store);
@@ -32,6 +34,7 @@ const AddPost = () => {
             .then(() => {
               toast.success("Post created successfull.");
               dispatch({ type: "hideLoading" });
+              navigate("/");
             })
             .catch(() => {
               dispatch({ type: "hideLoading" });
