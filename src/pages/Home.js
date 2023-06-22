@@ -1,8 +1,14 @@
 import React, { useEffect } from  "react";
+
 import DefaultLayout from "../components/DefaultLayout";
+
 import { useState } from "react";
+
 import { fireDB } from "../firebaseConfig";
+
 import { collection, getDocs } from "firebase/firestore";
+
+
 import { useDispatch } from "react-redux";
 function Home() {
   const [data, setData] = useState([]);
