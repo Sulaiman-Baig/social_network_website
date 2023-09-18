@@ -21,7 +21,7 @@ const Header = () => {
       title: "Profile",
       path: "/profil",
     },
-  ];
+  ];  
 
   return (
     <div className="p-5 bg-primary rounded-md">
